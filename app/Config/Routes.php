@@ -30,8 +30,8 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
 
+$routes->get('/', 'Home::list');
 /**
  * --------------------------------------------------------------------
  * Additional Routing
@@ -45,10 +45,13 @@ $routes->get('/', 'Home::index');
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-
+$routes->get('/FormCreate', 'Home::FormCreate');
+$routes->post('create', 'Home::create');
 $routes->get('/list', 'Home::list');
-$routes->get('/update', 'Home::updateForm');
-$routes->get('/delete', 'Home::deleteForm');
+$routes->get('/FormUpdate', 'Home::FormUpdate');
+$routes->patch('/update', 'Home::update');
+$routes->get('/FormDelete', 'Home::FormDelete');
+$routes->delete('/delete', 'Home::delete');
 
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
 {

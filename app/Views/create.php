@@ -25,7 +25,7 @@
 			<h4>Create</h4>
 	</div>
 	<div class="row">
-		<form class="col s12" action="<?= base_url("/home/create") ?>" method="POST">
+		<form class="col s12" action="<?= base_url("/create") ?>" method="POST">
 			<div class="row">
 				<div class="input-field col s6">
 					<input id="first_name" type="text" class="validate" name="first_name">
@@ -47,7 +47,7 @@
 					<div class="input-field col s1">Age :</div>
 					<div class="input-field col s2">
 						<span id="age-display"></span>
-						<input type="hidden" name="age" >
+						<input type="hidden" name="age" id="hiddenAge">
 					</div>
 					<div class="input-field col s12">
 						<div id="age">
@@ -108,7 +108,7 @@
 <script type="text/javascript">
 	function updateAgeDisplay(values, handle) {
 		$("#age-display").text(values);
-		document.getElementsByName("age").value = values;
+		document.getElementById('hiddenAge').value = values;
 	}
 
 	var slider = document.getElementById('age');

@@ -24,7 +24,7 @@
 			<nav>
 				<div class="nav-wrapper #3e2723 brown darken-4">
 					<ul id="nav-mobile" class="left hide-on-med-and-down">
-						<li><a href="<?php echo base_url("/"); ?>">
+						<li><a href="<?php echo base_url("/FormCreate"); ?>">
 								<h5>Create</h5>
 							</a>
 						</li>
@@ -32,11 +32,11 @@
 								<h5>Read</h5>
 							</a>
 						</li>
-						<li><a href="<?php echo base_url("/update"); ?>">
+						<li><a href="<?php echo base_url("/FormUpdate"); ?>">
 								<h5>Update</h5>
 							</a>
 						</li>
-						<li><a href="<?php echo base_url("/delete"); ?>">
+						<li><a href="<?php echo base_url("/FormDelete"); ?>">
 								<h5>Delete</h5>
 							</a>
 						</li>
