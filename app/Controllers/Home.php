@@ -94,7 +94,35 @@ class Home extends BaseController
 	}
 
 	public function FormDelete(){
+		$get = $this->request->getGet();
+		$builder = $this->db->table('persons');
 
+		$view = array();
+		$view['isUpdate']  = 0;
+		$view['all'] = $builder->select('id, first_name, last_name')->get();
+		if(isset($get['id'])){
+			 $view['isUpdate']  = 1;
+			$view['row'] = $builder->getWhere(['id' => $get['id']]);
+		}
+		return view("delete",$view);
+	}
+	
+	
+	public function delete(){
+		$post = $this->request->getPost();
+		$builder = $this->db->table('persons');
+
+
+		$builder->where('id', $post['id']);
+		$update = $builder->delete();;
+
+		if($update){
+			$this->session->setFlashdata('success', 'Delete Data Success');
+		}else{
+			$this->session->setFlashdata('failed', 'Failed Delete Data');
+		}
+
+		return redirect()->to(base_url('/list')); 
 	}
 	
 
