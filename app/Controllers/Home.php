@@ -6,10 +6,12 @@ class Home extends BaseController
 {
 	public $db;
 	public $session;
+	public $personModel;
 	public function __construct()
 	{
 		$this->db      = \Config\Database::connect();
 		$this->session = session();
+		$this->personModel = new \App\Models\PersonModel();
 	}
 	
 	public function FormCreate()
@@ -20,7 +22,6 @@ class Home extends BaseController
 	public function create(){
 
 		$post = $this->request->getPost();
-		$builder = $this->db->table('persons');
 		$data = [
 			"first_name" => $post['first_name'],
 			"last_name" => $post['last_name'],
@@ -29,7 +30,7 @@ class Home extends BaseController
 			"programming" => json_encode($post['programming'])
 		];
 
-		$insert = $builder->insert($data);
+		$insert = $this->personModel->save($data);
 		if($insert){
 			$this->session->setFlashdata('success', 'New Data Added');
 		}else{
@@ -40,24 +41,20 @@ class Home extends BaseController
 	}
 
 	public function list(){
-		$builder = $this->db->table('persons');
-
 		$view = array();
-		$view['row'] = $builder->get();
+		$view['row'] = $this->personModel->get();
 		return view("read",$view);
 	}
 
 	public function FormUpdate(){
 
 		$get = $this->request->getGet();
-		$builder = $this->db->table('persons');
-
 		$view = array();
 		$view['isUpdate']  = 0;
-		$view['all'] = $builder->select('id, first_name, last_name')->get();
+		$view['all'] = $this->personModel->select('id, first_name, last_name')->get();
 		if(isset($get['id'])){
 			 $view['isUpdate']  = 1;
-			$view['row'] = $builder->getWhere(['id' => $get['id']]);
+			$view['row'] = $this->personModel->getWhere(['id' => $get['id']]);
 		}
 		return view("update",$view);
 
@@ -65,7 +62,6 @@ class Home extends BaseController
 
 	public function update(){
 		$post = $this->request->getPost();
-		$builder = $this->db->table('persons');
 
 		$updatedData = [
 			'first_name' => $post['first_name'],
@@ -76,13 +72,7 @@ class Home extends BaseController
 		];
 
 
-		$builder->set('first_name',$post['first_name']);
-		$builder->set('last_name',$post['last_name']);
-		$builder->set('email',$post['email']);
-		$builder->set('age',$post['age']);
-		$builder->set('programming',json_encode($post['programming']));
-		$builder->where('id',$post['id']);
-		$update = $builder->update();
+		$update = $this->personModel->update($post['id'], $updatedData);
 
 		if($update){
 			$this->session->setFlashdata('success', 'Update Data Success');
@@ -95,14 +85,13 @@ class Home extends BaseController
 
 	public function FormDelete(){
 		$get = $this->request->getGet();
-		$builder = $this->db->table('persons');
 
 		$view = array();
 		$view['isUpdate']  = 0;
-		$view['all'] = $builder->select('id, first_name, last_name')->get();
+		$view['all'] = $this->personModel->select('id, first_name, last_name')->get();
 		if(isset($get['id'])){
 			 $view['isUpdate']  = 1;
-			$view['row'] = $builder->getWhere(['id' => $get['id']]);
+			$view['row'] = $this->personModel->getWhere(['id' => $get['id']]);
 		}
 		return view("delete",$view);
 	}
@@ -110,11 +99,8 @@ class Home extends BaseController
 	
 	public function delete(){
 		$post = $this->request->getPost();
-		$builder = $this->db->table('persons');
 
-
-		$builder->where('id', $post['id']);
-		$update = $builder->delete();;
+		$update = $this->personModel->where('id', $post['id'])->delete();;
 
 		if($update){
 			$this->session->setFlashdata('success', 'Delete Data Success');
